@@ -1,0 +1,25 @@
+# Ignore all .log files
+*.log
+
+# Ignore all .csv files
+*.csv
+
+# Ignore virtual environment
+.venv/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore token files
+*token*
+
+# Ignore specific Python script
+test-log.py
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+.env
+
+parsed_openstack_logs.json
