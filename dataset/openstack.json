@@ -1,0 +1,124 @@
+{
+    "question_set": [
+      {
+        "category_name": "Instance Lifecycle",
+        "questions": [
+          {
+            "nl_query": "How long did it take to spawn instance 3edec1e4-9678-4a3a-a21b-a145a4ee5e61 on the hypervisor?",
+            "logql_query": "{application=\"openstack\", log_file_type=\"nova-compute\"} |= \"3edec1e4-9678-4a3a-a21b-a145a4ee5e61\" | regexp \"\\[instance: (?P<instance_id>[^\\]]+)\\] Took (?P<spawn_time>\\d+\\.\\d+) seconds to spawn the instance on the hypervisor\" | line_format \"{{.spawn_time}}\"",
+            "result": null
+          },
+          {
+            "nl_query": "What was the total time taken to build instance 3edec1e4-9678-4a3a-a21b-a145a4ee5e61?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "How many instances were successfully spawned in the last hour?",
+            "logql_query": null,
+            "result": null
+          }
+        ]
+      },
+      {
+        "category_name": "Resource Management",
+        "questions": [
+          {
+            "nl_query": "What are the current memory, disk, and vcpu usage for instance 3416d0fa-6f0f-41ce-9c0a-59ae9a735da8?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "How many total usable vcpus are available, and how many are currently allocated?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "What is the current resource view for compute node cp-1.slowvm1.tcloud-pg0.utah.cloudlab.us?",
+            "logql_query": null,
+            "result": null
+          }
+        ]
+      },
+      {
+        "category_name": "API Performance",
+        "questions": [
+          {
+            "nl_query": "What was the response time for the last GET request to /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/detail?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "How many POST requests to /v2/e9746973ac574c6b8a9e8857f56a7608/os-server-external-events resulted in a 200 status code in the last 30 minutes?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "What's the average response time for DELETE requests to /v2/54fadb412c4e40cdbaed9335e4c35a9e/servers/ in the past hour?",
+            "logql_query": null,
+            "result": null
+          }
+        ]
+      },
+      {
+        "category_name": "Error Analysis",
+        "questions": [
+          {
+            "nl_query": "How many instances of 'HTTP exception thrown: No instances found for any event' occurred in the nova-api logs today?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "What errors were encountered during the ComputeManager._run_image_cache_manager_pass operation in the last 24 hours?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "How many times did we receive a 503 status code while validating tokens in the past 6 hours?",
+            "logql_query": null,
+            "result": null
+          }
+        ]
+      },
+      {
+        "category_name": "Image Management",
+        "questions": [
+          {
+            "nl_query": "How many active base files are currently in use?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "What is the usage status of image 0673dd71-34c5-4fbb-86c4-40623fbe45b4?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "How many unknown base files were detected in the last 12 hours?",
+            "logql_query": null,
+            "result": null
+          }
+        ]
+      },
+      {
+        "category_name": "Network Operations",
+        "questions": [
+          {
+            "nl_query": "How long did it take to deallocate the network for instance 3edec1e4-9678-4a3a-a21b-a145a4ee5e61?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "How many network-vif-plugged events were created in the last hour?",
+            "logql_query": null,
+            "result": null
+          },
+          {
+            "nl_query": "What was the average time taken for network deallocation across all instances in the past 24 hours?",
+            "logql_query": null,
+            "result": null
+          }
+        ]
+      }
+    ]
+  }

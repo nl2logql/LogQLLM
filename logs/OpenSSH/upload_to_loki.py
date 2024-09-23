@@ -11,7 +11,7 @@ from tqdm import tqdm
 load_dotenv()
 
 LOKI_URL = os.getenv("LOKI_URL")
-PARSED_LOG_FILE = "parsed_openstack_logs.json"
+PARSED_LOG_FILE = "parsed_openssh_logs.json"
 USER_ID = os.getenv("USER_ID", "")
 API_KEY = os.getenv("API_KEY", "")
 
@@ -28,11 +28,11 @@ async def upload_to_loki(session, log_entry: LogEntry):
         payload = LokiPayload(
             streams=[
                 {
-                    "stream": log_entry.labels.model_dump(),
+                    "stream": log_entry.labels.model_dump(exclude_none=True),
                     "values": [
                         [
                             str(nanoseconds),
-                            escaped_content,
+                            log_entry.content,
                             log_entry.structured_metadata.model_dump(
                                 exclude_none=True, mode="json"
                             ),
@@ -78,7 +78,7 @@ async def main():
     )  # Limit queue size to control memory usage
 
     async with aiohttp.ClientSession(auth=auth) as session:
-        with tqdm(total=207632, desc="Upload Progress") as progress_bar:
+        with tqdm(total=638947, desc="Upload Progress") as progress_bar:
             # Start the producer
             producer_task = asyncio.create_task(
                 producer(queue, PARSED_LOG_FILE)

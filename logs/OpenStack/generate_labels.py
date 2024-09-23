@@ -27,7 +27,7 @@ def parse_log(log_file, csv_file):
                 log_level=log_level_match.group(1) if log_level_match else None,
                 component=line.split()[5] if len(line.split()) > 5 else None,
                 log_file_name=line.split()[0],
-                line_id=line_id,
+                # line_id=None,
             )
 
             # Extract Structured Metadata

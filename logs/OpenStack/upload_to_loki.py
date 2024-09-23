@@ -1,18 +1,21 @@
 import asyncio
 import json
+import os
 from datetime import datetime
 
 import aiohttp
+from dotenv import load_dotenv
 from models import LogEntry, LokiPayload
 from tqdm import tqdm
 
+load_dotenv()
 # read from .env
-LOKI_URL = ""
+LOKI_URL = os.getenv("LOKI_URL")
 BATCH_SIZE = 1000  # Number of log lines to batch before sending to Loki
 PARSED_LOG_FILE = "parsed_openstack_logs.json"
 
-USER_ID = ""
-API_KEY = ""
+USER_ID = os.getenv("USER_ID", "")
+API_KEY = os.getenv("API_KEY", "")
 
 
 async def upload_to_loki(session, log_entry: LogEntry):
@@ -26,7 +29,7 @@ async def upload_to_loki(session, log_entry: LogEntry):
         payload = LokiPayload(
             streams=[
                 {
-                    "stream": log_entry.labels.model_dump(exclude={"line_id"}),
+                    "stream": log_entry.labels.model_dump(),
                     "values": [
                         [
                             str(nanoseconds),

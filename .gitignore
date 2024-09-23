@@ -23,3 +23,10 @@ test-log.py
 .env
 
 parsed_openstack_logs.json
+
+dataset/nl-logql-dataset/
+
+*.sesskey
+
+# Ignore all .json files
+*.json

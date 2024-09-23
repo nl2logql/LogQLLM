@@ -1,22 +1,23 @@
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel, field_serializer
+from pydantic import BaseModel, field_serializer, field_validator
 
 
 class Labels(BaseModel):
-    application: str = "openstack"
-    log_file_type: str
-    log_level: Optional[str]
-    component: Optional[str]
-    log_file_name: str
-    # line_id: Optional[]
+    application: str = "openssh"
+    hostname: str = "LabSZ"
 
 
 class StructuredMetadata(BaseModel):
-    request_id: Optional[str]
-    tenant_id: Optional[str]
-    user_id: Optional[str]
+    process_id: str
+    rhost: Optional[str] = None
+    ruser: Optional[str] = None
+
+    @field_validator("process_id", mode="before")
+    @classmethod
+    def convert_process_id_to_str(cls, v):
+        return str(v) if isinstance(v, int) else v
 
 
 class LogEntry(BaseModel):
