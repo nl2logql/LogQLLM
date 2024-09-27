@@ -39,7 +39,7 @@ except Exception:
 
 
 class Entry(BaseModel):
-    application: str | None = "openssh"
+    application: str | None = "openstack"
     category: str
     question: str
     logql_query: str
@@ -53,7 +53,7 @@ async def add_entry(entry: Entry):
     new_id = df["id"].max() + 1 if len(df) > 0 else 1
     new_row = pd.DataFrame(
         {
-            "application": [entry.application or "openssh"],
+            "application": [entry.application or "openstack"],
             "id": [new_id],
             "category": [entry.category],
             "question": [entry.question],
@@ -71,7 +71,7 @@ async def add_entry(entry: Entry):
 @app.get("/entries")
 async def get_entries(
     page: int = Query(1, ge=1),
-    items_per_page: int = Query(25, ge=1, le=100),
+    items_per_page: int = Query(100, ge=1, le=100),
     application_filter: Optional[str] = None,
     category_filter: Optional[str] = None,
 ):

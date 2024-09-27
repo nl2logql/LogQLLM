@@ -115,7 +115,7 @@ def get():
         Script(f"""
             const BACKEND_URL = "{BACKEND_URL}";
             let currentPage = 1;
-            let itemsPerPage = 25;
+            let itemsPerPage = 100;
             let currentApplicationFilter = "None";
             let currentCategoryFilter = "None";
 

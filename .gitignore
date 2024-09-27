@@ -25,7 +25,8 @@ test-log.py
 parsed_openstack_logs.json
 
 dataset/nl-logql-dataset/
-
+dataset/nl-logql-dataset-classified/
+dataset/nl-logql-dataset-classified-metric/
 *.sesskey
 
 # Ignore all .json files
