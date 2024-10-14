@@ -24,10 +24,10 @@ test-log.py
 
 parsed_openstack_logs.json
 
-dataset/nl-logql-dataset/
-dataset/nl-logql-dataset-classified/
-dataset/nl-logql-dataset-classified-metric/
+dataset/nl-logql-dataset*/
 *.sesskey
 
 # Ignore all .json files
 *.json
+
+llm-finetuning/

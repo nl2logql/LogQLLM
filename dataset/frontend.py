@@ -15,11 +15,18 @@ def get():
             H2("Add New Entry"),
             Form(id="add-entry-form")(
                 Label("Application", Input(name="application")),
-                Label("Category", Input(name="category")),  # New field
+                Label("Category", Input(name="category")),
                 Label("Question", Input(name="question")),
                 Label("LogQL Query", Textarea(name="logql_query")),
                 Label("Query Explanation", Textarea(name="query_explanation")),
                 Label("Query Result", Textarea(name="query_result")),
+                Label(
+                    "Log Category Result", Textarea(name="log_category_result")
+                ),
+                Label("Line Filter", Input(name="line_filter")),
+                Label("Label Filter", Input(name="label_filter")),
+                Label("Metric Category", Input(name="metric_category")),
+                Label("Variables", Input(name="variables")),
                 Button("Add Entry", type="submit"),
             ),
             H2("Existing Entries"),
@@ -28,20 +35,20 @@ def get():
                     "Filter by Application",
                     Select(id="application-filter")(
                         Option("None", value="None", selected="selected"),
-                        # We'll populate this dynamically
                     ),
                 ),
                 Label(
-                    "Filter by Category",  # New filter
+                    "Filter by Category",
                     Select(id="category-filter")(
                         Option("None", value="None", selected="selected"),
-                        # We'll populate this dynamically
                     ),
                 ),
                 Button("Apply Filters", id="apply-filters"),
             ),
             Div(id="entries-table"),
             Div(id="pagination-controls"),
+            # Add the button to view all entries
+            P(A("View All Entries", href="/view_entries", cls="button")),
             # Edit Modal
             Div(id="edit-modal", cls="modal")(
                 Div(cls="modal-content")(
@@ -55,7 +62,7 @@ def get():
                         Label(
                             "Category",
                             Input(id="edit-category", name="category"),
-                        ),  # New field
+                        ),
                         Label(
                             "Question",
                             Input(id="edit-question", name="question"),
@@ -76,6 +83,32 @@ def get():
                             Textarea(
                                 id="edit-query_result", name="query_result"
                             ),
+                        ),
+                        Label(
+                            "Log Category Result",
+                            Textarea(
+                                id="edit-log_category_result",
+                                name="log_category_result",
+                            ),
+                        ),
+                        Label(
+                            "Line Filter",
+                            Input(id="edit-line_filter", name="line_filter"),
+                        ),
+                        Label(
+                            "Label Filter",
+                            Input(id="edit-label_filter", name="label_filter"),
+                        ),
+                        Label(
+                            "Metric Category",
+                            Input(
+                                id="edit-metric_category",
+                                name="metric_category",
+                            ),
+                        ),
+                        Label(
+                            "Variables",
+                            Input(id="edit-variables", name="variables"),
                         ),
                         Button("Save Changes", type="submit"),
                         Button(
@@ -110,6 +143,18 @@ def get():
             }
             #pagination-controls button {
                 margin: 0 5px;
+            }
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                margin-top: 20px;
+            }
+            .button:hover {
+                background-color: #0056b3;
             }
         """),
         Script(f"""
@@ -308,6 +353,66 @@ def get():
             // Initial load
             populateFilters();
             loadEntries();
+        """),
+    )
+
+
+@rt("/view_entries")
+def view_entries():
+    return Titled(
+        "View All Entries",
+        Div(
+            H2("All Entries"),
+            Div(id="all-entries-table"),
+            A("Back to Main Page", href="/"),
+        ),
+        Script("""
+            const BACKEND_URL = "http://localhost:8000";
+            function loadAllEntries() {
+                fetch(`${BACKEND_URL}/all_entries`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const table = document.createElement('table');
+                        table.innerHTML = `
+                            <tr>
+                                <th>ID</th>
+                                <th>Application</th>
+                                <th>Category</th>
+                                <th>Question</th>
+                                <th>LogQL Query</th>
+                                <th>Query Explanation</th>
+                                <th>Query Result</th>
+                                <th>Log Category Result</th>
+                                <th>Line Filter</th>
+                                <th>Label Filter</th>
+                                <th>Metric Category</th>
+                                <th>Variables</th>
+                            </tr>
+                        `;
+                        data.entries.forEach(entry => {
+                            const row = table.insertRow();
+                            row.innerHTML = `
+                                <td>${entry.id}</td>
+                                <td>${entry.application}</td>
+                                <td>${entry.category}</td>
+                                <td>${entry.question}</td>
+                                <td>${entry.logql_query}</td>
+                                <td>${entry.query_explanation}</td>
+                                <td>${entry.query_result}</td>
+                                <td>${JSON.stringify(entry.log_category_result)}</td>
+                                <td>${entry.line_filter}</td>
+                                <td>${entry.label_filter}</td>
+                                <td>${entry.metric_category?.join(', ')}</td>
+                                <td>${entry.variables?.join(', ')}</td>
+                            `;
+                        });
+                        document.getElementById('all-entries-table').innerHTML = '';
+                        document.getElementById('all-entries-table').appendChild(table);
+                    });
+            }
+
+            // Load all entries when the page loads
+            loadAllEntries();
         """),
     )
 
