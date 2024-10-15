@@ -99,11 +99,11 @@ strict: false
 local_rank:
 
 # WANDB
-wandb_mode: online
-wandb_project: logqllm
+wandb_mode:
+wandb_project:
 wandb_watch:
-wandb_name: llama-3.1-70b
-wandb_run_id: sample-01
+wandb_name:
+wandb_run_id:
 
 # Multi-GPU
 # deepspeed: /root/axolotl/deepspeed_configs/zero3_bf16.json
@@ -112,76 +112,3 @@ wandb_run_id: sample-01
 deepspeed:
 fsdp:
 fsdp_config:
-# model_type: AutoModelForCausalLM
-# tokenizer_type: AutoTokenizer
-
-# load_in_8bit: true
-# load_in_4bit: false
-# strict: false
-
-# output_dir: ./lora-out
-# chat_template: gemma
-# datasets:
-#   - path: data.jsonl
-#     ds_type: json
-#     type:
-#       field_instruction: instruction
-#       field_input: input
-#       field_output: output
-#       format: |-
-#         [INST] {instruction}
-#         {input} [/INST]
-
-# adapter: lora
-# lora_model_dir:
-# lora_r: 16
-# lora_alpha: 32
-# lora_dropout: 0.05
-# lora_target_linear: true
-# lora_fan_in_fan_out:
-
-# sequence_len: 1024
-# sample_packing: true
-# eval_sample_packing: false
-# pad_to_sequence_len: true
-
-# wandb_mode: online
-# wandb_project: logqllm
-# wandb_watch:
-# wandb_name: gemma-2-9b
-# wandb_run_id: sample-00
-
-# gradient_accumulation_steps: 1
-# micro_batch_size: 16
-# num_epochs: 4
-# optimizer: adamw_bnb_8bit
-# lr_scheduler: cosine
-# learning_rate: 0.0002
-
-# train_on_inputs: false
-# group_by_length: false
-# bf16: auto
-# fp16:
-# tf32: false
-
-# gradient_checkpointing: true
-# early_stopping_patience:
-# resume_from_checkpoint:
-# local_rank:
-# logging_steps: 1
-# eval_steps: 0.05
-# xformers_attention:
-# flash_attention: true
-
-# # warmup_ratio: 0.1
-# warmup_steps: 10
-# evals_per_epoch:
-# eval_table_size:
-# eval_max_new_tokens: 128
-# saves_per_epoch: 1
-# debug:
-# deepspeed:
-# weight_decay: 0.0
-# fsdp:
-# fsdp_config:
-# special_tokens:

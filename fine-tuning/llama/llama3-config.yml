@@ -2,8 +2,8 @@
 # Model Configuration: LLaMA-3 70B
 ###
 
-# base_model: NousResearch/Hermes-3-Llama-3.1-8B
-base_model: NousResearch/Hermes-3-Llama-3.1-70B
+base_model: NousResearch/Hermes-3-Llama-3.1-8B
+# base_model: NousResearch/Hermes-3-Llama-3.1-70B
 sequence_len: 1024
 
 # base model weight quantization
@@ -101,11 +101,11 @@ strict: false
 local_rank:
 
 # WANDB
-wandb_mode: online
-wandb_project: logqllm
+wandb_mode:
+wandb_project:
 wandb_watch:
-wandb_name: llama-3.1-70b
-wandb_run_id: sample-01
+wandb_name:
+wandb_run_id:
 
 # Multi-GPU
 # deepspeed: /root/axolotl/deepspeed_configs/zero3_bf16.json
