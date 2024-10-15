@@ -214,24 +214,38 @@ def get_model_path_from_run(path: Path) -> Path:
     volumes=VOLUME_CONFIG,
     timeout=30 * MINUTES,
 )
-def launch():
-    print("Remote!")
-    run_dir = "/runs"
-    run_name = "axo-2024-10-14-07-43-05-b0d9"
+def launch(
+    jsonl_file: str,
+    run_dir: str = "/runs",
+    run_name: str = "axo-2024-10-14-07-43-05-b0d9",
+):
+    import json
+
     run_path = Path(run_dir) / run_name
-    # evaluator = Perplexity()
     model_path = get_model_path_from_run(path=run_path)
     perplexity = Perplexity()
-    input_texts = [
-        r"[QL] avg(\n  avg_over_time(\n    {application=\"openstack-asia-pacific\", component=\"nova.compute.manager\"}\n    |~ \"Took .* seconds to build instance\"\n    | regexp \"Took (?P<build_time>[0-9.]+) seconds to build instance\"\n    | unwrap build_time [1w]\n  )\n) [\/QL]",
-        "Happy Birthday!",
-        "Bienvenue",
-    ]
+
+    input_texts = []
+
+    with open(jsonl_file, "r") as f:
+        for line in f:
+            data = json.loads(line)
+            if "output" in data:
+                input_texts.append(data["output"])
+
+    if not input_texts:
+        print("Warning: No 'output' fields found in the JSONL file.")
+        return
+
     pplx = perplexity._compute(model_path=model_path, predictions=input_texts)
     print(pplx)
 
 
 @app.local_entrypoint()
-def main():
+def main(
+    jsonl_file: str,
+    run_dir: str = "/runs",
+    run_name: str = "axo-2024-10-14-07-43-05-b0d9",
+):
     print("Local!")
-    launch.remote()
+    launch.remote(jsonl_file=jsonl_file, run_dir=run_dir, run_name=run_name)
