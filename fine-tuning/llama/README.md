@@ -20,6 +20,10 @@
 - `calculate_perplexity.py`: Standalone Modal Function to load the model and return perplexity scores on the inputs. *Input: `data.jsonl` with `output` key present; `run_name` of the training run.*
   - Might be needed to modify to write the scores to a file or whatever.
 ## Running
+
+### Data Prep
+Run the `<model>-dataset.ipynb` notebook
+
 ### Fine-tuning
 
 ```bash
