@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogQL</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+    {% if ask_name %}
+    <div class="modal">
+        <form action="/set_name" method="post">
+            <label for="name">Enter your name:</label>
+            <input type="text" id="name" name="name" required>
+            <button type="submit">Query some logs!</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="container">
+        <aside class="side-panel">
+            <div class="top-side">
+                <h2>Chat History </h2>
+                <h2><button id="new-chat"><i class="fa fa-pen"></i></button></h2>
+            </div>
+            
+            <ul id="chat-history">
+                {% for chat in chats %}
+                <li onclick="loadChat('{{ chat.data.id }}')">{{ chat.title }}</li>
+                {% endfor %}
+            </ul>
+        </aside>
+        <main class="chat-section">
+            <div id="chat-window" class="chat-window">
+                <!-- Chat messages will appear here -->
+            </div>
+            <div class="form-wrapper">
+                <h2 class="query-title">Query your logs!</h2>
+                <form id="chat-form" class="chat-form">
+                    <div class="form-group">
+                        <select name="model" id="model-select" class="model-select">
+                            {% for model in models %}
+                            <option value="{{ model }}"">{{ model }}</option>
+                            {% endfor %}
+                        </select>
+                        <textarea id="user-input" name="message" class="user-input" placeholder="Type your message..." autocomplete="off" required></textarea>
+                        <!-- <input type="text" id="user-input" name="message" class="user-input" placeholder="Type your message..." autocomplete="off" required> -->
+                        <button type="submit" class="send-button">Send</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    {% endif %}
+    <script src="{{ url_for('static', path='script.js') }}"></script>
+</body>
+</html>

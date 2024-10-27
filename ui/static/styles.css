@@ -1,0 +1,325 @@
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* border-radius: 8px; */
+    overflow: hidden;
+}
+
+.top-side {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.side-panel {
+    width: 20%;
+    background-color: #313538;
+    color: #fff;
+    padding: 20px;
+    overflow-y: auto;
+}
+#new-chat {
+    background-color: #4A4E52; 
+    color: #fff; 
+    border: none; 
+    padding: 10px 15px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+}
+
+#new-chat:hover {
+    background-color: #5C6268; 
+    transform: scale(1.05); 
+}
+
+#new-chat:active {
+    background-color: #3B3F42; 
+}
+
+#new-chat i {
+    font-size: 1.2em; 
+}
+
+.side-panel h2 {
+    margin-top: 0;
+}
+
+#chat-history {
+    padding-left: 0;
+}
+
+#chat-history li {
+    cursor: pointer;
+    margin: 10px 0;
+    padding: 10px;
+    
+    border-radius: 4px;
+    list-style-type: none;
+    background-color: #4A4E52; 
+    color: #fff; 
+    border: none; 
+    padding: 10px 15px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+
+}
+
+#chat-history li:hover {
+    /* background-color: #2b2f31; */
+    background-color: #5C6268; 
+    transform: scale(1.02); 
+}
+#chat-history li:active {
+    background-color: #3B3F42; 
+}
+
+.chat-section {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    /* background-color: #ecf0f1; */
+    background-color: #4A4E52; 
+
+}
+
+.chat-window {
+    width: 80%;
+    flex-grow: 1;
+    overflow-y: auto;
+    /* border: 1px solid #bdc3c7; */
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #fff;
+    /* background-color: #fff; */
+    background-color: #4A4E52; 
+    border-radius: 4px;
+}
+.message-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.message-wrapper.user {
+    justify-content: flex-end;
+}
+
+.message-wrapper.assistant {
+    justify-content: flex-start;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 16px;
+    /* max-width: 60%; */
+    transition: background-color 0.3s ease;
+
+}
+
+
+.user {
+    align-self: flex-end;
+    /* background-color: #3498db; */
+    /* color: #fff; */
+    
+}
+
+.assistant {
+    align-self: flex-start;
+    /* background-color: #2ecc71; */
+    /* color: #fff; */
+}
+
+.feedback-form {
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    max-height: fit-content;
+    max-width: fit-content;
+    gap: 5px;
+    padding: 5px;
+    border-radius: 8px; 
+    background-color: #303436;
+
+    /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); */
+    font-size: 0.85em; /* Smaller text size */
+}
+
+.feedback-input {
+    flex-grow: 1;
+    padding: 3px; /* Smaller padding */
+    border-radius: 4px;
+    border: 1px solid #bdc3c7;
+}
+
+.send-feedback-button {
+    padding: 3px 8px; /* Smaller padding */
+    border: none;
+    background-color: #e67e22;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.send-feedback-button:hover {
+    background-color: #d35400;
+}
+
+.thumbs-up, .thumbs-down {
+    cursor: pointer;
+    font-size: 1.2em; /* Slightly smaller thumbs icons */
+}
+
+.chat-form {
+    margin-bottom: 2em;
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+.form-group {
+    display: flex;
+    width: 100%;
+}
+
+.model-select {
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #bdc3c7;
+}
+
+.user-input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #bdc3c7;
+    margin-right: 10px;
+}
+
+.send-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #e67e22;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background-color: #d35400;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* For WebKit browsers (Chrome, Edge, Safari) */
+.chat-window::-webkit-scrollbar, .side-panel::-webkit-scrollbar  {
+    width: 6px; /* Make the scrollbar thinner */
+}
+
+.chat-window::-webkit-scrollbar-track, .side-panel::-webkit-scrollbar-track  {
+    background-color: #5C6268; /* Lighter color on hover */
+}
+
+.chat-window::-webkit-scrollbar-thumb, .side-panel::-webkit-scrollbar-thumb  {
+    background-color: #4A4E52; /* Darker color for the scrollbar */
+    border-radius: 10px; /* Rounded edges for modern look */
+}
+
+.chat-window::-webkit-scrollbar-thumb:hover, .side-panel::-webkit-scrollbar-thumb:hover  {
+    background-color: #313538; /* Match the background of the .side-panel */
+}
+
+/* For Firefox */
+.chat-window, .side-panel  {
+    scrollbar-width: thin; /* Make the scrollbar thin */
+    scrollbar-color: #313538 #4A4E52 ; /* Thumb color and track color */
+}
+
+
+/* Style for the large textarea in the first message form */
+.first-message-form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    bottom: 50%;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* padding: 20px; */
+    /* height: 100%; */
+}
+
+.query-title {
+    color: #fff;
+}
+
+/* Large textarea for the first message */
+.first-message-textarea {
+    flex-grow: 1; /* Let it take up as much space as possible */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #000;
+    overflow-y: auto; /* Show scrollbar if needed */
+}
+
+textarea {
+    resize: none;
+}
+
+/* Style for the dropdown and send button */
+.first-message-model-select,
+.first-message-send-button {
+    height: 50px; 
+    /* margin: 0 10px; */
+    font-size: 0.7em;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: 1px solid #bdc3c7;
+}
+
+.first-message-model-select {
+    max-width: 150px; /* Limit the width */
+}
+
+.first-message-send-button {
+    background-color: #e67e22;
+    color: #fff;
+}
+
+.first-message-send-button:hover {
+    background-color: #d35400;
+}
+
+.hidden {
+    display: none;
+}
