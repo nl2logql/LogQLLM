@@ -323,3 +323,121 @@ textarea {
 .hidden {
     display: none;
 }
+
+@media (max-width: 767px) {
+    .container {
+      flex-direction: column;
+    }
+  
+    .side-panel {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .chat-section {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .chat-window {
+      width: 100%;
+    }
+  
+    .chat-form {
+      width: 100%;
+    }
+  
+    .first-message-form {
+      bottom: 0;
+      padding: 10px;
+    }
+  
+    .first-message-textarea {
+      font-size: 1em;
+    }
+  
+    .first-message-model-select,
+    .first-message-send-button {
+      height: 40px;
+      font-size: 0.8em;
+    }
+  }
+  
+  /* Tablet styles */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+      flex-direction: column;
+    }
+  
+    .side-panel {
+      width: 100%;
+      padding: 15px;
+    }
+  
+    .chat-section {
+      width: 100%;
+      padding: 15px;
+    }
+  
+    .chat-window {
+      width: 100%;
+    }
+  
+    .chat-form {
+      width: 100%;
+    }
+  
+    .first-message-form {
+      bottom: 0;
+      padding: 15px;
+    }
+  
+    .first-message-textarea {
+      font-size: 1.1em;
+    }
+  
+    .first-message-model-select,
+    .first-message-send-button {
+      height: 45px;
+      font-size: 0.9em;
+    }
+  }
+  
+  /* Desktop styles */
+  @media (min-width: 1024px) {
+    .container {
+      flex-direction: row;
+    }
+  
+    .side-panel {
+      width: 20%;
+    }
+  
+    .chat-section {
+      width: 80%;
+    }
+  
+    .chat-window {
+      width: 80%;
+    }
+  
+    .chat-form {
+      width: 80%;
+    }
+  
+    .first-message-form {
+      bottom: 50%;
+      padding: 20px;
+    }
+  
+    .first-message-textarea {
+      font-size: 1.2em;
+    }
+  
+    .first-message-model-select,
+    .first-message-send-button {
+      height: 50px;
+      font-size: 1em;
+    }
+  }
+  
