@@ -14,8 +14,8 @@ from os.path import join, dirname
 import logging
 
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
+# dotenv_path = join(dirname(__file__), '.env')
+# load_dotenv(dotenv_path)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -258,3 +258,8 @@ async def feedback(feedback: FeedbackRequest):
         raise HTTPException(status_code=500, detail="Error inserting feedback.")
     
     return {"status": "Feedback submitted successfully"}
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
