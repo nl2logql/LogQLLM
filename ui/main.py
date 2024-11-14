@@ -14,8 +14,8 @@ from os.path import join, dirname
 import logging
 
 
-# dotenv_path = join(dirname(__file__), '.env')
-# load_dotenv(dotenv_path)
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,10 +28,45 @@ templates = Jinja2Templates(directory="templates")
 supabase_client: Client = create_client(os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_SERVICE_ROLE_KEY"))
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-SUPPORTED_MODELS = [
-    "ft-gpt-4o",
-]
+MODEL_PARAMS = {
+    "messages": [
+        {
+        "role": "system",
+        "content": [
+            {
+            "text": "You are LogQLLM, a specialized language model trained to convert natural language queries into LogQL (Log Query Language) queries. Your primary function is to interpret user requests expressed in plain English and translate them into valid LogQL syntax.",
+            "type": "text"
+            }
+        ]
+        }
+    ],
+    "temperature": 0.2,
+    "max_tokens": 2048,
+    "top_p": 1,
+    "frequency_penalty": 0,
+    "presence_penalty": 0,
+    "response_format": {
+        "type": "text"
+    }
+}
 
+MODEL_REQ_TEMPLATES = {
+    "gemma-2-logql": {
+        "model": "gemma-2-logql",
+        **MODEL_PARAMS
+    },
+    "llama-3.1-logql ": {
+        "model": "llama-3.1-logql",
+        **MODEL_PARAMS
+    }
+}
+
+SUPPORTED_MODELS = list(MODEL_REQ_TEMPLATES.keys())
+
+MODEL_API_ROUTES = {
+    "gemma-2-logql": "",
+    "llama-3.1-logql ": ""
+}
 
 def sanitize_name(name: str) -> str:
     sanitized = re.sub(r'[^a-zA-Z0-9 ]', '', name).strip()
@@ -190,8 +225,10 @@ async def chat(request: ChatRequest, user_request: Request):
         raise HTTPException(status_code=400, detail="Unsupported model.")
 
     try:
-        #TODO: Replace with custom inference client 
-
+        #TODO: Replace with custom inference client
+        api_req = MODEL_REQ_TEMPLATES[request.model]
+        api_req['messages'].append(request.messages[-1])
+        print(api_req)
         response = client.chat.completions.create(
             model="ft:gpt-4o-2024-08-06:epoch-0:logqllm-0:AEZ5l6x0",
             messages=[
