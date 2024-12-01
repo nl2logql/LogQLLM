@@ -62,7 +62,7 @@ class Inference:
         )
 
         engine_args = AsyncEngineArgs(
-            model=model_path,
+            model=,
             gpu_memory_utilization=0.95,
             tensor_parallel_size=N_INFERENCE_GPUS,
             disable_custom_all_reduce=True,  # brittle as of v0.5.0

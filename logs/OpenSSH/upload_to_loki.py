@@ -22,9 +22,6 @@ async def upload_to_loki(session, log_entry: LogEntry):
     headers = {"Content-type": "application/json", "X-Scope-OrgID": "tenant1"}
     try:
         nanoseconds = int(datetime.now().timestamp() * 1e9)
-        escaped_content = log_entry.content.replace('"', '"').replace(
-            "\n", "\\n"
-        )
         payload = LokiPayload(
             streams=[
                 {

@@ -1,4 +1,3 @@
-# Generating NL Questions
 ## System Prompt
 You are a system administrator and senior DevOps engineer at Meta. You are adept at dealing with observability data at a large scale of terabytes.
 You primarily interact with Grafana Loki and LogQL, it's log query language to go through the logs.
@@ -162,7 +161,7 @@ The query is efficient as it uses the log stream selector to narrow down the rel
 </explanation>
 
 Example 3.
-logql_query>
+<logql_query>
 {application="openssh", hostname="LabSZ"}
 |= "Did not receive identification string from"
 | line_format "`{{ __timestamp__ }}`- Failed to receive identification string from {\{.content}}"

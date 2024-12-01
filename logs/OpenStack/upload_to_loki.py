@@ -9,19 +9,18 @@ from models import LogEntry, LokiPayload
 from tqdm import tqdm
 
 load_dotenv()
-# read from .env
-LOKI_URL = os.getenv("LOKI_URL")
-BATCH_SIZE = 1000  # Number of log lines to batch before sending to Loki
-PARSED_LOG_FILE = "parsed_openstack_logs.json"
 
+LOKI_URL = os.getenv("LOKI_URL")
+PARSED_LOG_FILE = "parsed_openstack_logs.json"
 USER_ID = os.getenv("USER_ID", "")
 API_KEY = os.getenv("API_KEY", "")
+
+NUM_WORKERS = 100  # Number of worker tasks
 
 
 async def upload_to_loki(session, log_entry: LogEntry):
     headers = {"Content-type": "application/json", "X-Scope-OrgID": "tenant1"}
     try:
-        # nanoseconds = int(log_entry.timestamp.timestamp() * 1e9)
         nanoseconds = int(datetime.now().timestamp() * 1e9)
         escaped_content = log_entry.content.replace('"', '"').replace(
             "\n", "\\n"
@@ -42,38 +41,64 @@ async def upload_to_loki(session, log_entry: LogEntry):
                 }
             ]
         )
-        # print(json.dumps(payload.model_dump(), indent=2))
         async with session.post(
             url=LOKI_URL, data=payload.model_dump_json(), headers=headers
         ) as response:
             if response.status != 204:
                 print(f"Failed to upload to Loki: {await response.text()}")
-            else:
-                # print("Successfully uploaded to Loki")
-                pass
     except Exception as e:
         print(f"Error during upload to Loki: {str(e)}")
         print(f"Problematic entry: {log_entry}")
 
 
-async def process_log_files(session, filename, progress_bar):
+async def worker(name, queue, session, progress_bar):
+    while True:
+        log_entry = await queue.get()
+        if log_entry is None:
+            queue.task_done()
+            break
+        await upload_to_loki(session, log_entry)
+        progress_bar.update(1)
+        queue.task_done()
+
+
+async def producer(queue, filename):
     with open(filename, "r") as fd:
         entries = json.load(fd)
         for entry in entries:
             entry["timestamp"] = datetime.fromisoformat(entry["timestamp"])
             log_entry = LogEntry(**entry)
-            await upload_to_loki(session, log_entry)
-            progress_bar.update(1)
+            await queue.put(log_entry)
 
 
 async def main():
     auth = aiohttp.BasicAuth(USER_ID, API_KEY)
+    queue = asyncio.Queue(maxsize=1000)
+
     async with aiohttp.ClientSession(auth=auth) as session:
         with tqdm(total=207632, desc="Upload Progress") as progress_bar:
-            upload_tasks = [
-                process_log_files(session, PARSED_LOG_FILE, progress_bar)
+            # Start the producer
+            producer_task = asyncio.create_task(
+                producer(queue, PARSED_LOG_FILE)
+            )
+
+            # Start the workers
+            workers = [
+                asyncio.create_task(
+                    worker(f"worker-{i}", queue, session, progress_bar)
+                )
+                for i in range(NUM_WORKERS)
             ]
-            await asyncio.gather(*upload_tasks)
+
+            # Wait for the producer to finish
+            await producer_task
+
+            # Send termination signals to workers
+            for _ in range(NUM_WORKERS):
+                await queue.put(None)
+
+            # Wait for all workers to finish
+            await asyncio.gather(*workers)
 
 
 if __name__ == "__main__":

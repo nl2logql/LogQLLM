@@ -40,7 +40,7 @@ axolotl_image = (
 
 vllm_image = (
     modal.Image.debian_slim(python_version="3.10")
-    .pip_install("vllm==0.6.2", "torch==2.4.0")
+    .pip_install("vllm==0.6.3p1", "torch==2.4.0", "bitsandbytes>=0.44.0")
     .entrypoint([])
 )
 

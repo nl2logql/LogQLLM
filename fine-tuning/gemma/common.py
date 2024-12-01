@@ -40,7 +40,7 @@ axolotl_image = (
 
 vllm_image = (
     modal.Image.debian_slim(python_version="3.10")
-    .pip_install("vllm==0.6.2", "torch==2.4.0")
+    .pip_install("vllm==0.6.2", "torch==2.4.0", "bitsandbytes>=0.44.0")
     .entrypoint([])
 )
 
@@ -56,7 +56,7 @@ app = modal.App(
 )
 
 pretrained_volume = modal.Volume.from_name("gemma2", create_if_missing=True)
-runs_volume = modal.Volume.from_name("runs-vol", create_if_missing=True)
+runs_volume = modal.Volume.from_name("runs-vol-final", create_if_missing=True)
 
 
 VOLUME_CONFIG: dict[Union[str, PurePosixPath], modal.Volume] = {

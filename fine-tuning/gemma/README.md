@@ -2,7 +2,7 @@
 - `common.py`: Initialises container images and configs for `train.py` and `inference.py`
 - `train.py`: Code to fine-tune.
   - `main` function is the local entrypoint that runs locally. It triggers and calls the other functions to run on modal.
-- `<model>-config.yml`: The `axolotl` configuration to fine-tune Llama 3.1-8B
+- `<model>-config.yml`: The `axolotl` configuration to fine-tune Gemma-2 9B.
   - `datasets` key: Defines the path to the dataset, how to read it and the format in which to construct it. This is custom. Other examples [here](https://github.com/axolotl-ai-cloud/axolotl/tree/main/examples/).
   - `train_on_inputs` key: Defines whether to mask the input while fine-tuning, set to `false`. Comparision of performance between `true`/`false` maybe interesting
   - `seed` key: For reproducability
@@ -38,7 +38,7 @@ GPU_CONFIG= ALLOW_WANDB=false modal run train --config=<model>-config.yml --data
 
 ### Inference
 ```bash
-modal run -q inference --run-name axo-2024-10-09-23-24-17-3059
+modal run -q inference --run-name <run_name>
 ```
 
 - `-q` recommended.

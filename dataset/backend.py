@@ -78,7 +78,7 @@ async def get_entries(
     global df
 
     # Sort entries in descending order of their IDs
-    sorted_df = df.sort_values("id", ascending=False)
+    sorted_df = df.sort_values("id", ascending=True)
 
     # Filter by application if provided
     if application_filter and application_filter.lower() != "none":

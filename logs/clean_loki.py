@@ -1,3 +1,5 @@
+""""Script to delete and clean up logs from Grafana Loki."""
+
 import os
 from datetime import datetime, timedelta, timezone
 

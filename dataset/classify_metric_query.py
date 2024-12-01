@@ -3,7 +3,7 @@ import os
 import instructor
 from datasets import Dataset
 from dotenv import load_dotenv
-from models import LogClass, MetricClass
+from models import MetricClass
 from openai import OpenAI
 from prompts import METRIC_CATEGORY_PROMPT
 
