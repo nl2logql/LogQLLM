@@ -1,36 +1,3 @@
-# ---
-# deploy: true
-# cmd: ["modal", "serve", "06_gpu_and_ml/llm-serving/vllm_inference.py"]
-# pytest: false
-# tags: ["use-case-lm-inference", "featured"]
-# ---
-
-# # Run an OpenAI-Compatible vLLM Server
-
-# LLMs do more than just model language: they chat, they produce JSON and XML, they run code, and more.
-# This has complicated their interface far beyond "text-in, text-out".
-# OpenAI's API has emerged as a standard for that interface,
-# and it is supported by open source LLM serving frameworks like [vLLM](https://docs.vllm.ai/en/latest/).
-
-# In this example, we show how to run a vLLM server in OpenAI-compatible mode on Modal.
-# You can find a video walkthrough of this example on our YouTube channel [here](https://www.youtube.com/watch?v=QmY_7ePR1hM).
-
-# Note that the vLLM server is a FastAPI app, which can be configured and extended just like any other.
-# Here, we use it to add simple authentication middleware, following the
-# [implementation in the vLLM repository](https://github.com/vllm-project/vllm/blob/v0.5.3post1/vllm/entrypoints/openai/api_server.py).
-
-# Our examples repository also includes scripts for running clients and load-testing for OpenAI-compatible APIs
-# [here](https://github.com/modal-labs/modal-examples/tree/main/06_gpu_and_ml/llm-serving/openai_compatible).
-
-# You can find a video walkthrough of this example and the related scripts on the Modal YouTube channel
-# [here](https://www.youtube.com/watch?v=QmY_7ePR1hM).
-
-# ## Set up the container image
-
-# Our first order of business is to define the environment our server will run in:
-# the [container `Image`](https://modal.com/docs/guide/custom-container).
-# vLLM can be installed with `pip`.
-
 import modal
 from common import app, VOLUME_CONFIG, MINUTES, HOURS
 import os
@@ -49,16 +16,6 @@ else:
 
 MODELS_DIR = "/models"
 MODEL_NAME = "nl-to-logql/llama-3.1-logql"
-# MODEL_NAME = "neuralmagic/Meta-Llama-3.1-8B-Instruct-quantized.w4a16"
-# DEFAULT_REVISION = "a7c09948d9a632c2c840722f519672cd94af885d"
-
-# MODEL_REVISION = "a7c09948d9a632c2c840722f519672cd94af885d"
-
-# We need to make the weights of that model available to our Modal Functions.
-
-# So to follow along with this example, you'll need to download those weights
-# onto a Modal Volume by running another script from the
-# [examples repository](https://github.com/modal-labs/modal-examples).
 
 try:
     volume = modal.Volume.lookup("models", create_if_missing=False)
@@ -72,7 +29,7 @@ TOKEN = "your-secret-token"  # auth token. for production use, replace with a mo
     image=vllm_image,
     gpu=INFERENCE_GPU_CONFIG,
     container_idle_timeout=5 * MINUTES,
-    timeout=24 * HOURS,
+    timeout=10 * MINUTES,
     allow_concurrent_inputs=1000,
     volumes={MODELS_DIR: volume},
 )
@@ -174,17 +131,14 @@ def serve():
 def get_model_config(engine):
     import asyncio
 
-    try:  # adapted from vLLM source -- https://github.com/vllm-project/vllm/blob/507ef787d85dec24490069ffceacbd6b161f4f72/vllm/entrypoints/openai/api_server.py#L235C1-L247C1
+    try:
         event_loop = asyncio.get_running_loop()
     except RuntimeError:
         event_loop = None
 
     if event_loop is not None and event_loop.is_running():
-        # If the current is instanced by Ray Serve,
-        # there is already a running event loop
         model_config = event_loop.run_until_complete(engine.get_model_config())
     else:
-        # When using single vLLM without engine_use_ray
         model_config = asyncio.run(engine.get_model_config())
 
     return model_config
