@@ -40,14 +40,12 @@ def parse_log(log_file, csv_file):
 
             # Extract Timestamp
             timestamp_match = re.search(
-                r"\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\.\d{3}", line
+                r"\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\.\d{3}", line
             )
             if timestamp_match:
                 timestamp_str = timestamp_match.group()
-                # Change the year to 2024
-                timestamp_str = "2024" + timestamp_str[4:]
                 timestamp = datetime.strptime(
-                    timestamp_str, "%Y-%m-%d %H:%M:%S.%f"
+                    timestamp_str, "%m-%d %H:%M:%S.%f"
                 )
             else:
                 timestamp = None

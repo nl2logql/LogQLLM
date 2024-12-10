@@ -17,6 +17,12 @@ Respective logs are stored in the following directories:
 - [logs/OpenStack](logs/OpenStack): Contains the OpenStack logs and scripts.
 - [logs/HDFS](logs/HDFS): Contains the HDFS logs and scripts.
 
+Order of running the scripts:
+1. `python filter.py`: Filters the log headers and messages.
+2. `python generate_labels.py`: Generates the labels and structured metadata into `parsed_<app>_logs.json`
+3. `python update_timestamps.py`: Updates the timestamps in the parsed logs from based on `datetime.now()` and relative time difference. This is done because Grafana Loki does not support ingesting out-of-order logs. [Link](https://grafana.com/blog/2024/01/04/the-concise-guide-to-loki-how-to-work-with-out-of-order-and-older-logs/)
+4. `python upload_to_loki.py`: Uploads the logs to Grafana Loki.
+
 
 ## Dataset Curation
 [dataset-curation/](dataset-curation/): This directory contains the scripts for creating the natural language to LogQL dataset. The dataset is created by pairing the natural language queries with the LogQL queries.

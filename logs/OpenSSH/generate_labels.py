@@ -37,9 +37,8 @@ def parse_log(log_file, csv_file):
                     r"^(\w{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2})", line
                 ).group(1)
                 if timestamp_match:
-                    datetime_str_with_year = f"2024 {timestamp_match}"
                     timestamp = datetime.strptime(
-                        datetime_str_with_year, "%Y %b %d %H:%M:%S"
+                        timestamp_match, "%b %d %H:%M:%S"
                     )
                 else:
                     timestamp = None

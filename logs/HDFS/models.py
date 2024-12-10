@@ -1,6 +1,7 @@
+from datetime import datetime
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
 
 
 class Labels(BaseModel):
@@ -19,12 +20,12 @@ class StructuredMetadata(BaseModel):
 class LogEntry(BaseModel):
     labels: Labels
     structured_metadata: StructuredMetadata
-    # timestamp: Optional[datetime] = None
+    timestamp: Optional[datetime] = None
     content: str
 
-    # @field_serializer("timestamp")
-    # def serialize_datetime(self, dt: datetime, _info):
-    #     return dt.isoformat()
+    @field_serializer("timestamp")
+    def serialize_datetime(self, dt: datetime, _info):
+        return dt.isoformat()
 
 
 class LokiPayload(BaseModel):
